@@ -23,6 +23,11 @@ public class ContactController {
         return contactService.getContactById(id);
     }
 
+    @GetMapping("/search")
+    public List<ContactDTO> searchContacts(@RequestParam String searchTerm) {
+        return contactService.searchContacts(searchTerm);
+    }
+
     @PostMapping
     public ContactDTO addContact(@RequestBody ContactDTO contactDTO) {
         return contactService.addContact(contactDTO);

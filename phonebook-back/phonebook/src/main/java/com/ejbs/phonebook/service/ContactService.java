@@ -39,6 +39,27 @@ public class ContactService {
         return contactRepository.findById(id).map(this::parseToDTO)
                 .orElseThrow(() -> new RuntimeException("Contact not found with id: " + id));
     }
+    public List<ContactDTO> searchContacts(String searchTerm) {
+        // Convert the search term to lowercase for case-insensitive search
+        searchTerm = searchTerm.toLowerCase();
+
+        // Call the contactRepository method to search for contacts by first name or last name
+        List<Contact> contacts = contactRepository.findByFirstNameContainingIgnoreCaseOrLastNameContainingIgnoreCase(searchTerm, searchTerm);
+
+        // Map the contacts to ContactDTO objects
+        List<ContactDTO> contactDTOs = contacts.stream()
+                .map(contact -> {
+                    ContactDTO contactDTO = new ContactDTO();
+                    contactDTO.setId(contact.getId());
+                    contactDTO.setFirstName(contact.getFirstName());
+                    contactDTO.setLastName(contact.getLastName());
+                    contactDTO.setPhone(contact.getPhone());
+                    return contactDTO;
+                })
+                .collect(Collectors.toList());
+
+        return contactDTOs;
+    }
 
     public ContactDTO addContact(ContactDTO contactDTO) {
         return this.parseToDTO(contactRepository.save(this.parseToEntity(contactDTO)));

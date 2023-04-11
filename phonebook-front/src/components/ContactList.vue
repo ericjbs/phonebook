@@ -31,7 +31,9 @@
               class="list-group-item d-flex justify-content-between align-items-center"
             >
               <div>
-                <h5 class="mb-1">{{ contact.firstName }} {{contact.lastName}}</h5>
+                <h5 class="mb-1">
+                  {{ contact.firstName }} {{ contact.lastName }}
+                </h5>
                 <p class="mb-1">{{ contact.phone }}</p>
               </div>
               <div>
@@ -99,63 +101,83 @@
 export default {
   data() {
     return {
-      searchTerm: "",
-      filteredContacts: [],
-      contacts: [
-        {
-          id: 1,
-          firstName: "Contact",
-          lastName: "Name 1",
-          phone: "123456789",
-        },
-        {
-          id: 2,
-          firstName: "Contact",
-          lastName: "Name 2",
-          phone: "987654321",
-        },
-        // Add more contacts here
-      ],
-      showAddContactForm: false,
-      newContact: {
-        firstName: "",
-        lastName: "",
-        phone: "",
+      data() {
+        return {
+          host:"localhost",
+          port:"8080",
+          searchTerm: "",
+          filteredContacts: [],
+          showAddContactForm: false,
+          newContact: {
+            firstName: "",
+            lastName: "",
+            phone: "",
+          },
+        };
       },
     };
   },
   methods: {
+    toggleAddContactForm() {
+      this.showAddContactForm = !this.showAddContactForm;
+      if (!this.showAddContactForm) {
+        this.newContact = {
+          firstName: "",
+          lastName: "",
+          phone: "",
+        };
+      }
+    },
     searchContacts() {
       const searchTerm = this.searchTerm.toLowerCase();
-
-      // Filter contacts based on search term
-      this.filteredContacts = this.contacts.filter((contact) => {
-        return (
-          contact.lastName.toLowerCase().includes(searchTerm)
-        );
-      });
+      // Fazer requisição à API para buscar os contatos com base no termo de busca
+      // Exemplo usando fetch:
+      fetch(`http://localhost:8080/contacts/search?searchTerm=${searchTerm}`)
+        .then((response) => response.json())
+        .then((data) => {
+          this.filteredContacts = data;
+        })
+        .catch((error) => {
+          console.error("Erro ao buscar contatos:", error);
+        });
     },
     clearSearch() {
       this.searchTerm = ""; // Clear search term
       this.filteredContacts = this.contacts; // Update filtered contacts list to show all contacts
     },
     deleteContact(contactId) {
-      this.contacts.splice(contactId);
-    },
-    toggleAddContactForm() {
-      this.showAddContactForm = !this.showAddContactForm;
-      if (!this.showAddContactForm) {
-        this.newContact = {
-          firstName: "",
-          lastName:"",
-          phone: "",
-        };
-      }
+      // Fazer requisição à API para deletar o contato com o ID fornecido
+      // Exemplo usando fetch:
+      fetch(`http://localhost:8080/contacts/${contactId}`, { method: "DELETE" })
+        .then(() => {
+          // Remover o contato da lista de contatos filtrados
+          this.filteredContacts = this.filteredContacts.filter(
+            (contact) => contact.id !== contactId
+          );
+        })
+        .catch((error) => {
+          console.error("Erro ao deletar contato:", error);
+        });
     },
     addContact() {
-      // Add the new contact to the contacts list and clear the form fields.
-      this.contacts.push({ ...this.newContact, id: Date.now() });
-      this.toggleAddContactForm();
+      // Fazer requisição à API para adicionar o novo contato
+      // Exemplo usando fetch:
+      fetch(`http://localhost:8080/contacts`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(this.newContact),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          // Adicionar o novo contato à lista de contatos filtrados e limpar o formulário
+          this.filteredContacts.push(data);
+          this.toggleAddContactForm();
+        })
+        .catch((error) => {
+          console.error("Erro ao adicionar contato:", error);
+        });
     },
   },
   watch: {

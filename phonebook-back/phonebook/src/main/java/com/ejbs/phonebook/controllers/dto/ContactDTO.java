@@ -15,20 +15,19 @@ import lombok.NoArgsConstructor;
 public class ContactDTO {
     private Long id;
 
-    @NotBlank(message = "First name cannot be empty")
-    @Size(max = 100, message = "First name can have at most 100 characters")
+    @NotBlank(message = "O nome não pode estar vazio")
+    @Size(max = 100, message = "O nome pode ter no máximo 100 caracteres")
     private String firstName;
 
-    @NotBlank(message = "Last name cannot be empty")
-    @Size(max = 100, message = "Last name can have at most 100 characters")
+    @NotBlank(message = "O sobrenome não pode estar vazio")
+    @Size(max = 100, message = "O sobrenome pode ter no máximo 100 caracteres")
     private String lastName;
 
-    @NotBlank(message = "Phone number cannot be empty")
-    @Size(max = 15, message = "Phone number can have at most 15 characters")
+    @NotBlank(message = "O telefone não pode estar vazio")
+    @Size(max = 15, message = "O telefone pode ter no máximo 15 caracteres")
     @Pattern(regexp = "\\+?\\d{1,3}?[-.\\s]?\\(?\\d{1,3}?\\)?[-.\\s]?\\d{1,4}[-.\\s]?\\d{1,4}[-.\\s]?\\d{1,9}",
-            message = "Phone number must be in a valid format")
+            message = "O telefone deve estar em um formato válido")
     private String phone;
-
 
 }
 
