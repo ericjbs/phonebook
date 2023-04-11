@@ -3,7 +3,6 @@ package com.ejbs.phonebook.service;
 import com.ejbs.phonebook.controllers.dto.ContactDTO;
 import com.ejbs.phonebook.model.Contact;
 import com.ejbs.phonebook.repository.ContactRepository;
-import lombok.Builder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,15 +28,23 @@ public class ContactService {
                 .build();
     }
 
+    private Contact parseToEntity(ContactDTO contactDTO) {
+        return Contact.builder()
+                .firstName(contactDTO.getFirstName())
+                .lastName(contactDTO.getLastName())
+                .phone(contactDTO.getPhone())
+                .build();
+    }
+
     // Obter um contato pelo ID
     public ContactDTO getContactById(Long id) {
-        return contactRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Contact not found with id: " + id));
+        return contactRepository.findById(id).map(this::parseToDTO)
+                .orElseThrow(() -> new RuntimeException("Contact not found with id: " + id));
     }
 
     // Adicionar um novo contato
     public ContactDTO addContact(ContactDTO contactDTO) {
-        return contactRepository.save(contactDTO);
+        return this.parseToDTO(contactRepository.save(this.parseToEntity(contactDTO)));
     }
 
     // Atualizar um contato existente
@@ -46,13 +53,13 @@ public class ContactService {
         existingContactDTO.setFirstName(contactDTO.getFirstName());
         existingContactDTO.setLastName(contactDTO.getLastName());
         existingContactDTO.setPhone(contactDTO.getPhone());
-        return contactRepository.save(existingContactDTO);
+        return this.parseToDTO(contactRepository.save(this.parseToEntity(existingContactDTO)));
     }
 
     // Deletar um contato pelo ID
     public void deleteContact(Long id) {
         ContactDTO contactDTO = getContactById(id);
-        contactRepository.delete(contactDTO);
+        contactRepository.delete(this.parseToEntity(contactDTO));
     }
 }
 

@@ -13,6 +13,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class ContactDTO {
+    private Long id;
 
     @NotBlank(message = "O nome não pode estar vazio")
     @Size(max = 100, message = "O nome pode ter no máximo 100 caracteres")
