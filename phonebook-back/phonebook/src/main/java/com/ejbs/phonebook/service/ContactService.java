@@ -22,6 +22,7 @@ public class ContactService {
 
     public ContactDTO parseToDTO(Contact contact) {
         return ContactDTO.builder()
+                .id(contact.getId())
                 .firstName(contact.getFirstName())
                 .lastName(contact.getLastName())
                 .phone(contact.getPhone())
