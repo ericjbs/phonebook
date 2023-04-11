@@ -1,6 +1,7 @@
 package com.ejbs.phonebook.service;
 
 import com.ejbs.phonebook.controllers.dto.ContactDTO;
+import com.ejbs.phonebook.model.Contact;
 import com.ejbs.phonebook.repository.ContactRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -8,6 +9,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import java.util.Optional;
+
+import static org.assertj.core.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -22,22 +26,24 @@ public class ContactServiceTest {
     @Test
     public void testCreateContact() {
         // Dados de entrada
-        ContactDTO contact = new ContactDTO();
-        contact.setFirstName("John");
-        contact.setLastName("Doe");
-        contact.setPhone("123456789");
+        Contact contact = Contact.builder()
+                .firstName("John")
+                .lastName("Doe")
+                .phone("123456789")
+                .build();
 
         // Mock do repositório
         when(contactRepository.save(contact)).thenReturn(contact);
 
         // Chamada do serviço
-        ContactDTO createdContact = contactService.createContact(contact);
+        ContactDTO createdContact = contactService.addContact(contactService.parseToDTO(contact));
 
         // Verificações
-        assertNotNull(createdContact);
-        assertEquals("John", createdContact.getFirstName());
-        assertEquals("Doe", createdContact.getLastName());
-        assertEquals("123456789", createdContact.getPhone());
+        assertThat(createdContact).isNotNull();
+        assertThat(createdContact.getFirstName()).isEqualTo("John");
+        assertThat(createdContact.getLastName()).isEqualTo("Doe");
+        assertThat(createdContact.getPhone()).isEqualTo("123456789");
+
 
         // Verifica se o método do repositório foi chamado corretamente
         verify(contactRepository, times(1)).save(contact);
@@ -47,7 +53,7 @@ public class ContactServiceTest {
     public void testGetContactById() {
         // Dados de entrada
         long contactId = 1L;
-        ContactDTO contact = new Contact();
+        Contact contact = new Contact();
         contact.setId(contactId);
         contact.setFirstName("John");
         contact.setLastName("Doe");
@@ -60,11 +66,11 @@ public class ContactServiceTest {
         ContactDTO retrievedContact = contactService.getContactById(contactId);
 
         // Verificações
-        assertNotNull(retrievedContact);
-        assertEquals(contactId, retrievedContact.getId().longValue());
-        assertEquals("John", retrievedContact.getFirstName());
-        assertEquals("Doe", retrievedContact.getLastName());
-        assertEquals("123456789", retrievedContact.getPhone());
+        assertThat(retrievedContact).isNotNull();
+        assertThat(retrievedContact.getId().longValue()).isEqualTo(contactId);
+        assertThat(retrievedContact.getFirstName()).isEqualTo("John");
+        assertThat(retrievedContact.getLastName()).isEqualTo("Doe");
+        assertThat(retrievedContact.getPhone()).isEqualTo("123456789");
 
         // Verifica se o método do repositório foi chamado corretamente
         verify(contactRepository, times(1)).findById(contactId);

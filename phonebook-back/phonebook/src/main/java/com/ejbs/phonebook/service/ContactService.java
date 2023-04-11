@@ -20,7 +20,7 @@ public class ContactService {
     }
 
 
-    private ContactDTO parseToDTO(Contact contact) {
+    public ContactDTO parseToDTO(Contact contact) {
         return ContactDTO.builder()
                 .firstName(contact.getFirstName())
                 .lastName(contact.getLastName())
@@ -28,7 +28,7 @@ public class ContactService {
                 .build();
     }
 
-    private Contact parseToEntity(ContactDTO contactDTO) {
+    public Contact parseToEntity(ContactDTO contactDTO) {
         return Contact.builder()
                 .firstName(contactDTO.getFirstName())
                 .lastName(contactDTO.getLastName())
