@@ -1,100 +1,98 @@
 openapi: 3.0.3
 info:
-  title: Phonebook API
-  description: RESTful API for managing contacts in a phonebook
+  title: API de Gerenciamento de Contatos
+  description: API para gerenciamento de contatos
   version: 1.0.0
 servers:
   - url: http://localhost:8080
+    description: Servidor de desenvolvimento
 paths:
   /contacts:
     get:
-      summary: Get all contacts
+      summary: Lista todos os contatos
       operationId: getAllContacts
       responses:
         '200':
-          description: OK
+          description: Lista de contatos obtida com sucesso
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Contact'
+                  $ref: '#/components/schemas/ContactDTO'
     post:
-      summary: Add a new contact
+      summary: Adiciona um novo contato
       operationId: addContact
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Contact'
+              $ref: '#/components/schemas/ContactDTO'
       responses:
         '200':
-          description: OK
+          description: Contato adicionado com sucesso
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Contact'
+                $ref: '#/components/schemas/ContactDTO'
   /contacts/{id}:
     get:
-      summary: Get a contact by ID
+      summary: Obtém detalhes de um contato pelo ID
       operationId: getContactById
       parameters:
         - name: id
           in: path
-          description: ID of the contact
+          description: ID do contato
           required: true
           schema:
             type: integer
-            format: int64
       responses:
         '200':
-          description: OK
+          description: Detalhes do contato obtidos com sucesso
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Contact'
+                $ref: '#/components/schemas/ContactDTO'
     put:
-      summary: Update a contact by ID
+      summary: Atualiza um contato pelo ID
       operationId: updateContact
       parameters:
         - name: id
           in: path
-          description: ID of the contact
+          description: ID do contato
           required: true
           schema:
             type: integer
-            format: int64
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Contact'
+              $ref: '#/components/schemas/ContactDTO'
       responses:
         '200':
-          description: OK
+          description: Contato atualizado com sucesso
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Contact'
+                $ref: '#/components/schemas/ContactDTO'
     delete:
-      summary: Delete a contact by ID
+      summary: Exclui um contato pelo ID
       operationId: deleteContact
       parameters:
         - name: id
           in: path
-          description: ID of the contact
+          description: ID do contato
           required: true
           schema:
             type: integer
-            format: int64
       responses:
         '204':
-          description: No Content
+          description: Contato excluído com sucesso
 components:
   schemas:
-    Contact:
+    ContactDTO:
       type: object
       properties:
         id:
@@ -103,9 +101,15 @@ components:
         firstName:
           type: string
           maxLength: 100
+          description: Nome do contato
+          example: João
         lastName:
           type: string
           maxLength: 100
+          description: Sobrenome do contato
+          example: Silva
         phone:
           type: string
           maxLength: 15
+          description: Telefone do contato
+          example: "+55 11 98765-4321"
