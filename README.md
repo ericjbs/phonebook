@@ -18,7 +18,7 @@ To set up and run the front-end of the application, follow the steps below:
 
 1. Open a terminal and navigate to the `phonebook-front` directory in the project.
 2. Install Node.js dependencies by running the command `npm install`.
-3. Start the Vue.js application by running the command `npm run serve`.
+3. Start the Vue.js application by running the command `npm run serve` (you can also run other commands, as seen [here](./phonebook-front/README.md)).
 4. Open a web browser and access `http://localhost:8080/` to view the running front-end application.
 
 ## Back-end Setup
