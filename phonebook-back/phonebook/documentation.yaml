@@ -1,18 +1,18 @@
 openapi: 3.0.3
 info:
-  title: API de Contatos
+  title: Phonebook API
+  description: RESTful API for managing contacts in a phonebook
   version: 1.0.0
-  description: Documentação da API de Contatos
 servers:
-  - url: http://localhost:8080/api
+  - url: http://localhost:8080
 paths:
   /contacts:
     get:
-      summary: Lista de contatos
-      description: Retorna uma lista de contatos cadastrados.
+      summary: Get all contacts
+      operationId: getAllContacts
       responses:
         '200':
-          description: Sucesso
+          description: OK
           content:
             application/json:
               schema:
@@ -20,8 +20,8 @@ paths:
                 items:
                   $ref: '#/components/schemas/Contact'
     post:
-      summary: Criação de contato
-      description: Cria um novo contato.
+      summary: Add a new contact
+      operationId: addContact
       requestBody:
         required: true
         content:
@@ -29,33 +29,42 @@ paths:
             schema:
               $ref: '#/components/schemas/Contact'
       responses:
-        '201':
-          description: Contato criado com sucesso
+        '200':
+          description: OK
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Contact'
   /contacts/{id}:
-    parameters:
-      - name: id
-        in: path
-        description: ID do contato
-        required: true
-        schema:
-          type: integer
     get:
-      summary: Detalhes de contato
-      description: Retorna os detalhes de um contato pelo ID.
+      summary: Get a contact by ID
+      operationId: getContactById
+      parameters:
+        - name: id
+          in: path
+          description: ID of the contact
+          required: true
+          schema:
+            type: integer
+            format: int64
       responses:
         '200':
-          description: Sucesso
+          description: OK
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Contact'
     put:
-      summary: Atualização de contato
-      description: Atualiza os detalhes de um contato pelo ID.
+      summary: Update a contact by ID
+      operationId: updateContact
+      parameters:
+        - name: id
+          in: path
+          description: ID of the contact
+          required: true
+          schema:
+            type: integer
+            format: int64
       requestBody:
         required: true
         content:
@@ -64,17 +73,25 @@ paths:
               $ref: '#/components/schemas/Contact'
       responses:
         '200':
-          description: Contato atualizado com sucesso
+          description: OK
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Contact'
     delete:
-      summary: Exclusão de contato
-      description: Exclui um contato pelo ID.
+      summary: Delete a contact by ID
+      operationId: deleteContact
+      parameters:
+        - name: id
+          in: path
+          description: ID of the contact
+          required: true
+          schema:
+            type: integer
+            format: int64
       responses:
         '204':
-          description: Contato excluído com sucesso
+          description: No Content
 components:
   schemas:
     Contact:
@@ -85,11 +102,10 @@ components:
           format: int64
         firstName:
           type: string
+          maxLength: 100
         lastName:
           type: string
+          maxLength: 100
         phone:
           type: string
-      required:
-        - firstName
-        - lastName
-        - phone
+          maxLength: 15
