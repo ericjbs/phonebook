@@ -14,7 +14,9 @@
           ><strong>{{ contact.firstName }} {{ contact.LastName }}</strong></span
         >
         <div>
-          <a href="#" title="Delete" v-on:click.prevent="removeContact(index)">Delete</a>
+          <a href="#" title="Delete" v-on:click.prevent="removeContact(index)"
+            >Delete</a
+          >
         </div>
       </div>
     </div>
@@ -33,17 +35,21 @@ export default {
     };
   },
   methods: {
-    addContact(contact) {},
-    removeContact(contact) {},
+    addContact(contact) {
+      this.contacts.push(contact);
+    },
+    removeContact(index) {
+        this.contacts.splice(index);
+    },
   },
   computed: {
     allContacts() {
-      return this.contacts.map(contact => ({
-          ...contact,
-          firstName: contact.firstName.trim(),
-          lastName: contact.lastName.trim(),
-          phoneNumber: contact.phoneNumber.trim()
-      }))
+      return this.contacts.map((contact) => ({
+        ...contact,
+        firstName: contact.firstName.trim(),
+        lastName: contact.lastName.trim(),
+        phoneNumber: contact.phoneNumber.trim(),
+      }));
     },
   },
 };
