@@ -25,33 +25,32 @@ public class ContactServiceTest {
 
     @Test
     public void testCreateContact() {
-        // Dados de entrada
+        // Input data
         Contact contact = Contact.builder()
                 .firstName("John")
                 .lastName("Doe")
                 .phone("123456789")
                 .build();
 
-        // Mock do repositório
+        // Mock the repository
         when(contactRepository.save(contact)).thenReturn(contact);
 
-        // Chamada do serviço
+        // Call the service
         ContactDTO createdContact = contactService.addContact(contactService.parseToDTO(contact));
 
-        // Verificações
+        // Assertions
         assertThat(createdContact).isNotNull();
         assertThat(createdContact.getFirstName()).isEqualTo("John");
         assertThat(createdContact.getLastName()).isEqualTo("Doe");
         assertThat(createdContact.getPhone()).isEqualTo("123456789");
 
-
-        // Verifica se o método do repositório foi chamado corretamente
+        // Verify if the repository method was called correctly
         verify(contactRepository, times(1)).save(contact);
     }
 
     @Test
     public void testGetContactById() {
-        // Dados de entrada
+        // Input data
         long contactId = 1L;
         Contact contact = new Contact();
         contact.setId(contactId);
@@ -59,23 +58,20 @@ public class ContactServiceTest {
         contact.setLastName("Doe");
         contact.setPhone("123456789");
 
-        // Mock do repositório
+        // Mock the repository
         when(contactRepository.findById(contactId)).thenReturn(Optional.of(contact));
 
-        // Chamada do serviço
+        // Call the service
         ContactDTO retrievedContact = contactService.getContactById(contactId);
 
-        // Verificações
+        // Assertions
         assertThat(retrievedContact).isNotNull();
         assertThat(retrievedContact.getId().longValue()).isEqualTo(contactId);
         assertThat(retrievedContact.getFirstName()).isEqualTo("John");
         assertThat(retrievedContact.getLastName()).isEqualTo("Doe");
         assertThat(retrievedContact.getPhone()).isEqualTo("123456789");
 
-        // Verifica se o método do repositório foi chamado corretamente
+        // Verify if the repository method was called correctly
         verify(contactRepository, times(1)).findById(contactId);
     }
-
-    // Mais testes de serviço podem ser adicionados aqui
 }
-
