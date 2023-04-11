@@ -31,7 +31,7 @@
               class="list-group-item d-flex justify-content-between align-items-center"
             >
               <div>
-                <h5 class="mb-1">{{ contact.name }}</h5>
+                <h5 class="mb-1">{{ contact.firstName }} {{contact.lastName}}</h5>
                 <p class="mb-1">{{ contact.phone }}</p>
               </div>
               <div>
@@ -55,21 +55,21 @@
       >
         <div class="form-group">
           <input
-            v-model="newContact.name"
+            v-model="newContact.firstName"
             type="text"
             class="form-control"
-            id="name"
-            placeholder="Name"
+            id="firstName"
+            placeholder="Frist Name"
             required
           />
         </div>
         <div class="form-group">
           <input
-            v-model="newContact.email"
-            type="email"
+            v-model="newContact.lastName"
+            type="text"
             class="form-control"
-            id="email"
-            placeholder="Email"
+            id="lastName"
+            placeholder="Last Name"
             required
           />
         </div>
@@ -82,15 +82,6 @@
             placeholder="Phone"
             required
           />
-        </div>
-        <div class="form-group">
-          <textarea
-            v-model="newContact.otherInformation"
-            class="form-control"
-            id="otherInformation"
-            rows="3"
-            placeholder="Other Information"
-          ></textarea>
         </div>
         <button type="submit" class="btn btn-primary">Add</button>
         <button
@@ -113,26 +104,23 @@ export default {
       contacts: [
         {
           id: 1,
-          name: "Contact Name 1",
-          email: "contact1@example.com",
+          firstName: "Contact",
+          lastName: "Name 1",
           phone: "123456789",
-          otherInformation: "Other information 1",
         },
         {
           id: 2,
-          name: "Contact Name 2",
-          email: "contact2@example.com",
+          firstName: "Contact",
+          lastName: "Name 2",
           phone: "987654321",
-          otherInformation: "Other information 2",
         },
         // Add more contacts here
       ],
       showAddContactForm: false,
       newContact: {
-        name: "",
-        email: "",
+        firstName: "",
+        lastName: "",
         phone: "",
-        otherInformation: "",
       },
     };
   },
@@ -143,8 +131,7 @@ export default {
       // Filter contacts based on search term
       this.filteredContacts = this.contacts.filter((contact) => {
         return (
-          contact.name.toLowerCase().includes(searchTerm) ||
-          contact.email.toLowerCase().includes(searchTerm)
+          contact.lastName.toLowerCase().includes(searchTerm)
         );
       });
     },
@@ -159,10 +146,9 @@ export default {
       this.showAddContactForm = !this.showAddContactForm;
       if (!this.showAddContactForm) {
         this.newContact = {
-          name: "",
-          email: "",
+          firstName: "",
+          lastName:"",
           phone: "",
-          otherInformation: "",
         };
       }
     },
