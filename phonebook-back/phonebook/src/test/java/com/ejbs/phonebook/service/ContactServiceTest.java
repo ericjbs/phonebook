@@ -52,11 +52,13 @@ public class ContactServiceTest {
     public void testGetContactById() {
         // Input data
         long contactId = 1L;
-        Contact contact = new Contact();
-        contact.setId(contactId);
-        contact.setFirstName("John");
-        contact.setLastName("Doe");
-        contact.setPhone("123456789");
+        Contact contact = Contact.builder()
+                .id(contactId)
+                .firstName("John")
+                .lastName("Doe")
+                .phone("123456789")
+                .build();
+
 
         // Mock the repository
         when(contactRepository.findById(contactId)).thenReturn(Optional.of(contact));
