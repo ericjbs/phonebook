@@ -14,11 +14,9 @@ public class ContactService {
     @Autowired
     private ContactRepository contactRepository;
 
-    // Obter todos os contatos
     public List<ContactDTO> getAllContacts() {
         return contactRepository.findAll().stream().map(this::parseToDTO).collect(Collectors.toList());
     }
-
 
     public ContactDTO parseToDTO(Contact contact) {
         return ContactDTO.builder()
@@ -37,18 +35,15 @@ public class ContactService {
                 .build();
     }
 
-    // Obter um contato pelo ID
     public ContactDTO getContactById(Long id) {
         return contactRepository.findById(id).map(this::parseToDTO)
                 .orElseThrow(() -> new RuntimeException("Contact not found with id: " + id));
     }
 
-    // Adicionar um novo contato
     public ContactDTO addContact(ContactDTO contactDTO) {
         return this.parseToDTO(contactRepository.save(this.parseToEntity(contactDTO)));
     }
 
-    // Atualizar um contato existente
     public ContactDTO updateContact(Long id, ContactDTO contactDTO) {
         ContactDTO existingContactDTO = getContactById(id);
         existingContactDTO.setFirstName(contactDTO.getFirstName());
@@ -57,7 +52,6 @@ public class ContactService {
         return this.parseToDTO(contactRepository.save(this.parseToEntity(existingContactDTO)));
     }
 
-    // Deletar um contato pelo ID
     public void deleteContact(Long id) {
         ContactDTO contactDTO = getContactById(id);
         contactRepository.delete(this.parseToEntity(contactDTO));
