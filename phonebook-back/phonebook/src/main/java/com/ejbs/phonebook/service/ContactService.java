@@ -45,7 +45,7 @@ public class ContactService {
         searchTerm = searchTerm.toLowerCase();
 
         // Call the contactRepository method to search for contacts by first name or last name
-        List<Contact> contacts = contactRepository.findByFirstNameContainingIgnoreCaseOrLastNameContainingIgnoreCase(searchTerm, searchTerm);
+        List<Contact> contacts = contactRepository.findByLastNameContainingIgnoreCase(searchTerm);
 
         // Map the contacts to ContactDTO objects
         List<ContactDTO> contactDTOs = contacts.stream()
