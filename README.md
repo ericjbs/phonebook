@@ -30,6 +30,8 @@ To set up and run the back-end of the application, follow the steps below:
 3. Configure the MySQL database by updating the connection settings in the `application.properties` file.
 4. Run the Spring Boot application.
 
+You can see a complete open api specification [here](./phonebook-back/phonebook/documentation.yaml).
+
 ## Documentation
 
 The complete documentation of the application, including the description of API endpoints, is available in the `API_DOCUMENTATION.md` file in this repository.
