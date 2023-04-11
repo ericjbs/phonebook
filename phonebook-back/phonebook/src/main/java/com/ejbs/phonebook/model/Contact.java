@@ -27,7 +27,7 @@ public class Contact {
 
     @NotBlank(message = "Phone number cannot be empty")
     @Size(max = 15, message = "Phone number can have at most 15 characters")
-    @Pattern(regexp = "\\+?\\d{1,3}?[-.\\s]?\\(?\\d{1,3}?\\)?[-.\\s]?\\d{1,4}[-.\\s]?\\d{1,4}[-.\\s]?\\d{1,9}",
+    @Pattern(regexp = "^(\\d{11})$|^(\\d{9})$|^(\\(?\\d{2}\\)?)?\\s?([9]{1})?\\s?(\\d{4})-?(\\d{4})$",
             message = "Phone number must be in a valid format")
     private String phone;
 }

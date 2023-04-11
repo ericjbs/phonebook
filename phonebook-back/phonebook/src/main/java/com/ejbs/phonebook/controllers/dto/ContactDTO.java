@@ -25,7 +25,7 @@ public class ContactDTO {
 
     @NotBlank(message = "O telefone não pode estar vazio")
     @Size(max = 15, message = "O telefone pode ter no máximo 15 caracteres")
-    @Pattern(regexp = "\\+?\\d{1,3}?[-.\\s]?\\(?\\d{1,3}?\\)?[-.\\s]?\\d{1,4}[-.\\s]?\\d{1,4}[-.\\s]?\\d{1,9}",
+    @Pattern(regexp = "^(\\d{11})$|^(\\d{9})$|^(\\(?\\d{2}\\)?)?\\s?([9]{1})?\\s?(\\d{4})-?(\\d{4})$",
             message = "O telefone deve estar em um formato válido")
     private String phone;
 
