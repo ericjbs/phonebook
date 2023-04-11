@@ -1,9 +1,17 @@
 <template>
   <div class="container mt-5">
-    <h1 class="text-center mb-4">Contacts List</h1>
+    <h1 class="text-center mb-4">
+      <i class="fas fa-address-book mr-2"></i>Phone Book App
+    </h1>
     <div class="row">
       <div class="col-sm-6 col-md-6 col-lg-6 offset-md-3">
-        <form class="form-inline mb-4" @submit.prevent="searchContacts">
+        <div class="d-flex justify-content-between align-items-center">
+          <h4 class="text-left mb-3">Contacts</h4>
+          <button class="btn btn-primary" @click="adicionarContato">
+            + Add Contact
+          </button>
+        </div>
+        <form class="form-inline mb-4 mt-4" @submit.prevent="searchContacts">
           <input
             v-model="searchTerm"
             type="text"
@@ -96,4 +104,8 @@ export default {
 @import url("https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css");
 /* Font Awesome Styles */
 @import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css");
+/* Gray Light Background*/
+body {
+  background-color: #d8d8d8;
+}
 </style>
