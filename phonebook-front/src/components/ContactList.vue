@@ -101,21 +101,29 @@
 export default {
   data() {
     return {
-      data() {
-        return {
-          host:"localhost",
-          port:"8080",
-          searchTerm: "",
-          filteredContacts: [],
-          showAddContactForm: false,
-          newContact: {
-            firstName: "",
-            lastName: "",
-            phone: "",
-          },
-        };
+      host: "localhost",
+      port: "8080",
+      searchTerm: "",
+      filteredContacts: [],
+      showAddContactForm: false,
+      newContact: {
+        firstName: "",
+        lastName: "",
+        phone: "",
       },
     };
+  },
+  mounted() {
+    // Fazer requisição à API para buscar todos os contatos
+    // Exemplo usando fetch:
+    fetch(`http://${this.host}:${this.port}/contacts`)
+      .then((response) => response.json())
+      .then((data) => {
+        this.filteredContacts = data;
+      })
+      .catch((error) => {
+        console.error("Erro ao buscar contatos:", error);
+      });
   },
   methods: {
     toggleAddContactForm() {
@@ -132,7 +140,7 @@ export default {
       const searchTerm = this.searchTerm.toLowerCase();
       // Fazer requisição à API para buscar os contatos com base no termo de busca
       // Exemplo usando fetch:
-      fetch(`http://localhost:8080/contacts/search?searchTerm=${searchTerm}`)
+      fetch(`http://${this.host}:${this.port}/contacts/search?searchTerm=${searchTerm}`)
         .then((response) => response.json())
         .then((data) => {
           this.filteredContacts = data;
@@ -148,7 +156,7 @@ export default {
     deleteContact(contactId) {
       // Fazer requisição à API para deletar o contato com o ID fornecido
       // Exemplo usando fetch:
-      fetch(`http://localhost:8080/contacts/${contactId}`, { method: "DELETE" })
+      fetch(`http://${this.host}:${this.port}/contacts/${contactId}`, { method: "DELETE" })
         .then(() => {
           // Remover o contato da lista de contatos filtrados
           this.filteredContacts = this.filteredContacts.filter(
@@ -162,7 +170,7 @@ export default {
     addContact() {
       // Fazer requisição à API para adicionar o novo contato
       // Exemplo usando fetch:
-      fetch(`http://localhost:8080/contacts`, {
+      fetch(`http://${this.host}:${this.port}/contacts`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
