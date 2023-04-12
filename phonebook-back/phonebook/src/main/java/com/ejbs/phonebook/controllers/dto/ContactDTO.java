@@ -7,12 +7,14 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.Transient;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 public class ContactDTO {
+    @Transient
     private Long id;
 
     @NotBlank(message = "O nome não pode estar vazio")
