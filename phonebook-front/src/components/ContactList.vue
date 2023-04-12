@@ -169,8 +169,6 @@ export default {
     };
   },
   mounted() {
-    // Fazer requisição à API para buscar todos os contatos
-    // Exemplo usando fetch:
     fetch(`http://${this.host}:${this.port}/contacts`)
       .then((response) => response.json())
       .then((data) => {
@@ -204,8 +202,6 @@ export default {
     },
     searchContacts() {
       const searchTerm = this.searchTerm.toLowerCase();
-      // Fazer requisição à API para buscar os contatos com base no termo de busca
-      // Exemplo usando fetch:
       fetch(
         `http://${this.host}:${this.port}/contacts/search?searchTerm=${searchTerm}`
       )
@@ -218,17 +214,14 @@ export default {
         });
     },
     clearSearch() {
-      this.searchTerm = ""; // Clear search term
-      this.filteredContacts = this.contacts; // Update filtered contacts list to show all contacts
+      this.searchTerm = "";
+      this.filteredContacts = this.contacts; 
     },
     deleteContact(contactId) {
-      // Fazer requisição à API para deletar o contato com o ID fornecido
-      // Exemplo usando fetch:
       fetch(`http://${this.host}:${this.port}/contacts/${contactId}`, {
         method: "DELETE",
       })
         .then(() => {
-          // Remover o contato da lista de contatos filtrados
           this.filteredContacts = this.filteredContacts.filter(
             (contact) => contact.id !== contactId
           );
@@ -238,8 +231,6 @@ export default {
         });
     },
     addContact() {
-      // Fazer requisição à API para adicionar o novo contato
-      // Exemplo usando fetch:
       fetch(`http://${this.host}:${this.port}/contacts`, {
         method: "POST",
         headers: {
@@ -249,7 +240,6 @@ export default {
       })
         .then((response) => response.json())
         .then((data) => {
-          // Adicionar o novo contato à lista de contatos filtrados e limpar o formulário
           this.filteredContacts.push(data);
           this.toggleAddContactForm();
         })
@@ -258,8 +248,6 @@ export default {
         });
     },
     updateContact(contactId) {
-      // Fazer requisição à API para adicionar o novo contato
-      // Exemplo usando fetch:
       fetch(`http://${this.host}:${this.port}/contacts/${contactId}`, {
         method: "PUT",
         headers: {
@@ -269,7 +257,6 @@ export default {
       })
         .then((response) => response.json())
         .then((data) => {
-          // Adicionar o novo contato à lista de contatos filtrados e limpar o formulário
           this.filteredContacts = [];
           fetch(`http://${this.host}:${this.port}/contacts`)
             .then((response) => response.json())
