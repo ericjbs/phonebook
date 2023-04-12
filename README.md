@@ -32,6 +32,10 @@ To set up and run the back-end of the application, follow the steps below:
 
 You can see a complete open api specification [here](./phonebook-back/phonebook/documentation.yaml).
 
+## Database Setup
+
+To set up and run the database of the application, run the script present at phonebook-database directory.
+
 ## Documentation
 
 The complete documentation of the application, including the description of API endpoints, is available in the `API_DOCUMENTATION.md` file in this repository.
