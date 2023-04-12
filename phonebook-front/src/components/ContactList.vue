@@ -3,7 +3,7 @@
     <h1 class="text-center mb-4">
       <i class="fas fa-address-book mr-2"></i>Phone Book App
     </h1>
-    <div v-if="!showAddContactForm">
+    <div v-if="!showAddContactForm && !showUpdateContactForm">
       <div class="row">
         <div class="col-sm-6 col-md-6 col-lg-6 offset-md-3">
           <div class="d-flex justify-content-between align-items-center">
@@ -30,7 +30,7 @@
               :key="contact.id"
               class="list-group-item d-flex justify-content-between align-items-center"
             >
-              <div>
+              <div @click="toggleUpdateContactForm(contact)">
                 <h5 class="mb-1">
                   {{ contact.firstName }} {{ contact.lastName }}
                 </h5>
@@ -48,6 +48,53 @@
           </ul>
         </div>
       </div>
+    </div>
+    <div v-if="showUpdateContactForm" class="text-center">
+      <h4 class="text-center mb-3">Update Contact</h4>
+      <form
+        @submit.prevent="updateContact(selectedContact.id)"
+        class="col-sm-6 col-md-6 col-lg-6 offset-md-3"
+      >
+        <div class="form-group">
+          <input
+            v-model="selectedContact.firstName"
+            type="text"
+            class="form-control"
+            id="firstName"
+            placeholder="Frist Name"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <input
+            v-model="selectedContact.lastName"
+            type="text"
+            class="form-control"
+            id="lastName"
+            placeholder="Last Name"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <input
+            v-model="selectedContact.phone"
+            type="text"
+            class="form-control"
+            id="phone"
+            placeholder="Phone"
+            required
+            pattern="^([0-9]{11})$|^([0-9]{9})$|^(\(?[0-9]{2}\)?)?\s?([9]{1})?\s?([0-9]{4})-?([0-9]{4})"
+          />
+        </div>
+        <button type="submit" class="btn btn-primary">Update</button>
+        <button
+          type="button"
+          class="btn btn-secondary"
+          @click="toggleUpdateContactForm"
+        >
+          Cancel
+        </button>
+      </form>
     </div>
     <div v-if="showAddContactForm" class="text-center">
       <h4 class="text-center mb-3">Add Contact</h4>
@@ -83,6 +130,7 @@
             id="phone"
             placeholder="Phone"
             required
+            pattern="^([0-9]{11})$|^([0-9]{9})$|^(\(?[0-9]{2}\)?)?\s?([9]{1})?\s?([0-9]{4})-?([0-9]{4})"
           />
         </div>
         <button type="submit" class="btn btn-primary">Add</button>
@@ -106,7 +154,14 @@ export default {
       searchTerm: "",
       filteredContacts: [],
       showAddContactForm: false,
+      showUpdateContactForm: false,
       newContact: {
+        firstName: "",
+        lastName: "",
+        phone: "",
+      },
+      selectedContact: {
+        id: 0,
         firstName: "",
         lastName: "",
         phone: "",
@@ -136,11 +191,24 @@ export default {
         };
       }
     },
+    toggleUpdateContactForm(contact) {
+      this.showUpdateContactForm = !this.showUpdateContactForm;
+      if (this.showUpdateContactForm) {
+        this.selectedContact = {
+          id: contact.id,
+          firstName: contact.firstName,
+          lastName: contact.lastName,
+          phone: contact.phone,
+        };
+      }
+    },
     searchContacts() {
       const searchTerm = this.searchTerm.toLowerCase();
       // Fazer requisição à API para buscar os contatos com base no termo de busca
       // Exemplo usando fetch:
-      fetch(`http://${this.host}:${this.port}/contacts/search?searchTerm=${searchTerm}`)
+      fetch(
+        `http://${this.host}:${this.port}/contacts/search?searchTerm=${searchTerm}`
+      )
         .then((response) => response.json())
         .then((data) => {
           this.filteredContacts = data;
@@ -156,7 +224,9 @@ export default {
     deleteContact(contactId) {
       // Fazer requisição à API para deletar o contato com o ID fornecido
       // Exemplo usando fetch:
-      fetch(`http://${this.host}:${this.port}/contacts/${contactId}`, { method: "DELETE" })
+      fetch(`http://${this.host}:${this.port}/contacts/${contactId}`, {
+        method: "DELETE",
+      })
         .then(() => {
           // Remover o contato da lista de contatos filtrados
           this.filteredContacts = this.filteredContacts.filter(
@@ -182,6 +252,35 @@ export default {
           // Adicionar o novo contato à lista de contatos filtrados e limpar o formulário
           this.filteredContacts.push(data);
           this.toggleAddContactForm();
+        })
+        .catch((error) => {
+          console.error("Erro ao adicionar contato:", error);
+        });
+    },
+    updateContact(contactId) {
+      // Fazer requisição à API para adicionar o novo contato
+      // Exemplo usando fetch:
+      fetch(`http://${this.host}:${this.port}/contacts/${contactId}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(this.selectedContact),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          // Adicionar o novo contato à lista de contatos filtrados e limpar o formulário
+          this.filteredContacts = [];
+          fetch(`http://${this.host}:${this.port}/contacts`)
+            .then((response) => response.json())
+            .then((data) => {
+              this.filteredContacts = data;
+            })
+            .catch((error) => {
+              console.error("Erro ao buscar contatos:", error);
+            });
+          
+          this.toggleUpdateContactForm(data);
         })
         .catch((error) => {
           console.error("Erro ao adicionar contato:", error);
